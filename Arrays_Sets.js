@@ -85,7 +85,7 @@ each element in its parameters. can add the functionality in the body. this patt
 so the some() method using its callback function will get access to each element in the array and iterate over the entire array. 
 i get access to the element within the callback. 
 
-some() method returns true or false 
+some() method returns true or false.  
 
 getting access to each element with callback function. call each element in the parameters at temperatures. in the function body,
 want to know if the array elements had record breaking temperatures, or isRecordTemp true. this could be checked/evaluated with statement
@@ -97,10 +97,20 @@ return false and therefore iterate thru all of the elements.
 */
 const temperatures = [
     { degrees: 69, isRecordTemp: false }, 
-    { degrees: 82, isRecordTemp: true }, 
+    { degrees: 82, isRecordTemp: true }, //if changed to false, results will return false because none of elements meets the condition with some()
     { degrees: 73, isRecordTemp: false }, 
     { degrees: 64, isRecordTemp: false }
 ] 
-
 const result = temperatures.some(temperature => temperature.isRecordTemp === true) //arrow functions have implicit return, can write code like this 
-console.log(result) 
+console.log(result) //returns true
+
+/*we already have a boolean value on temperature.isRecordTemp. current statement is comparable 
+to temperatures.some(temperature => true === true)  which is redundant. because using arrow functions, this statement can be 
+further simplified. */
+const result = temperatures.some(temperature => temperature.isRecordTemp) //returns true 
+
+/*every() method checks if all elements in an array meet a specific condition. every() will iterate through every element in an 
+array and will only return true if all of the elements meet a certain condition.   */
+const result = temperatures.every(temperature => temperature.isRecordTemp)  //checks if all elements are true
+const result = temperatures.every(temperature => temperature.isRecordTemp === false)  //checks if all elements are false
+const result = temperatures.every(temperature => !temperature.isRecordTemp)  //using logical not operator to check if all elements are false
