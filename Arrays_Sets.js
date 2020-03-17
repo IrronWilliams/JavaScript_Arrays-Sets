@@ -360,3 +360,96 @@ console.log(restaurants)  /*confirming the original array has not been mutated/a
 ]  
   */
   
+/* TRANSFORM ARRAYS WITH REDUCE()
+
+unlike map() which always returns an array, reduce() can return any type of value. reduce() iterates over all the array elements. 
+similar to other array methods, need to pass reduce() a callback function. in addition to callback function, reduce() also needs an 
+additional argument, which is the initial value of the operation i want to perform. since i want to add all of the menu prices, my 
+initial value needs to be a number, so will set to 0. 
+
+reduce() differs from other array methods like filter(), map() as follows:
+
+1. reduce() has a special value called the accumulator. think of accumulator as something to store a value. reduce() remembers the value
+of the accumulator every time the callback function runs for every single element in the array. for the accumulator to work and store 
+values, it has to be returned. 
+
+2. reduce() does not return the element with callback function. instead, reduce() returns the accumulator. 
+
+3. reduce() returns the final value of the accumulator after the last iteration.
+
+reduce() takes 2 parameters, the accumulator and each element that reduce() iterates over: 
+menuItems.reduce((accumulator, menuItem) => {}, 0) 
+
+can use reduce() to get a total price for all items on the menu (obtaining total of all the price properties). with the accumulator, i can 
+gather and add all of the prices from the menu. reduce() returns the final value of the accumulator after the last iteration. */
+
+const menuItems = [
+    { item: "Blue Cheese Salad", price: 8 },
+    { item: "Spicy Chicken Rigatoni", price: 18 },
+    { item: "Ponzu Glazed Salmon", price: 23 },
+    { item: "Philly Cheese Steak", price: 13 },
+    { item: "Baked Italian Chicken Sub", price: 12 },
+    { item: "Pan Seared Ribeye", price: 31 }
+  ] 
+/*the syntax using =  overrides the accumulator value which is initially set to 0. when reduce() iterates over array, the price of the 
+1st menu item will replace the 0 with 8. the accumulator will hold the value of 8 and when the 2nd iteration completes, the accumulator
+will be replaced with 18. so using = does not add the menu prices. need to use + operator which returns the result/stores value in
+accumulator which will be available for the next iteration. reduce() returns final value of accumulator after last iteration. storing 
+the final value in a variable called total. */
+menuItems.reduce((accumulator, menuItem) => {
+    //return accumulator = menuItem.price  //does not add menu prices, just replaces accumulator with price property after each iteration
+    return accumulator + menuItem.price   //adds the current menu price (as reduce iterates thru array) to the accumulator. 
+  }, 0) 
+console.log(total) //returns 105
+
+/*console logging the accumulator and menuItem arguments to better understand how reduce() works. see a total of 105 which is correct. 
+but also the results of each iteration. for the 1st iteration, the accumulator was set to the initial value of 0 that was passed in. 
+the 1st price was 8 and was added to the accumulator of 0. 8 was returned for the 2nd iteration. during the 2nd iteration, 18 was added
+to 8 and 26 was returned for the 3rd iteration. during 3rd iteration, 23 was added to 26 and 49 was returned for the 4th iteration. during 
+4th iteration, 13 was added to 49 and 62 was returned for the 5th iteration. during iteration #5, 12 was added to 62 and 74 was returned
+for the 6th iteration. during iteration #6, 31 was added to the accumulator currently holding 74 and 105 was stored in the accumulator 
+for the next iteration. since #6 was the last iteration, the final value of 105 was returned to the total value.*/
+const total = menuItems.reduce((accumulator, menuItem) => {
+    console.log(`
+      accumulator: ${accumulator},
+      menu item price: ${menuItem.price}
+    `) 
+    return accumulator + menuItem.price   
+  }, 0) 
+  console.log(total)    /* returns 
+accumulator: 0, menu item price: 8
+accumulator: 8, menu item price: 18
+accumulator: 26, menu item price: 23
+accumulator: 49, menu item price: 13
+accumulator: 62, menu item price: 12
+accumulator: 74, menu item price: 31
+105
+ */
+
+/* Challenge: 
+Use reduce() to sum the weights of all the cars
+Stretch goal: Use reduce to sum the weights of only the electric cars */
+const cars = [
+    { name: "Toyota", isElectric: false, weight: 1320 },
+    { name: "Ford", isElectric: false, weight: 1400 },
+    { name: "Volkswagen", isElectric: false, weight: 1370 },
+    { name: "Honda", isElectric: false, weight: 1375 },
+    { name: "Tesla", isElectric: true, weight: 1750 },
+    { name: "BMW", isElectric: true, weight: 1350 },  
+  ]
+const totalWeight = cars.reduce((accumulator, car) => {
+    return accumulator + car.weight 
+}, 0)
+console.log(totalWeight)  //returns 8565
+
+//using if/else to test if car is electric
+const totalWeight = cars.reduce((accumulator, car) => {
+    if (car.isElectric) {
+        return accumulator + car.weight 
+    } else {
+        return accumulator 
+    }
+}, 0)
+console.log(totalWeight)  //returns 3100 (adding the weights for electric cars Tesla and BMW)
+
+/*UNDERSTANDING THE POWER OF REDUCE() */
