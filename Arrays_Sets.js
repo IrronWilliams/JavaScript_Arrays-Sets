@@ -452,4 +452,49 @@ const totalWeight = cars.reduce((accumulator, car) => {
 }, 0)
 console.log(totalWeight)  //returns 3100 (adding the weights for electric cars Tesla and BMW)
 
-/*UNDERSTANDING THE POWER OF REDUCE() */
+/*UNDERSTANDING THE POWER OF REDUCE() 
+
+using reduce() to return an array with numbers 2x the value of each element [1, 2, 3, 4, 5, 6]. to begin, pass in the reduce callback
+function which for the reduce method is called the reducer, and accepts 2 arguments. first argument is accumulator and array element 
+i am iterating over and the second argument is the default value.  the default value is determined by the datatype that i want the results
+to be. since i want the results to be in an array, the initial value for the accumulator will be an empty array. 
+accelerator is abbreviated and the element i am looping over is called num and initial value is an array: 
+numbers.reduce((acc, num) => {}, []) 
+
+to double each number, take each num element in the body and multiply it by 2. the result of the product can be pushed on the accumulator
+array:
+acc.push(num * 2).
+
+lastly, to get returned array from reduce(), need to return accumulator at the end:
+return acc
+
+the program below performs the same operation as map()
+*/
+const numbers = [1, 2, 3, 4, 5, 6] 
+const doubledNumbers = numbers.reduce((acc, num) => {
+  acc.push(num * 2) 
+  return acc 
+}, []) 
+console.log('doubled numbers', doubledNumbers)  //returns doubled numbers, [2, 4, 6, 8, 10, 12]
+console.log('numbers', numbers)  //returns numbers, [1, 2, 3, 4, 5, 6]
+
+//using map() to double numbers in array. map() is just a shorthand for whats possible with the reduce() operation. 
+const doubledNumbers = numbers.map(num => num * 2) 
+
+/*using reduce to return numbers from the array that are greater than 3.  the second argument is an array because thats what i want 
+a subset of the array/another array. check each number i am iterating number. if the number is >3, put the number in an array with the
+help of the accumulator, because the accumulator is what the array is being set to for each iteration. use an if statement to check for 
+the condition and use acc and push to put number in array. this program does not have an else. just want to return the accumulator no 
+matter the result. finally, put the returned array in a variable called greaterNumbers.
+
+this program is equivalent to the filter() method*/
+const greaterNumbers = numbers.reduce((acc, num) => {
+    if (num > 3) {
+      acc.push(num) 
+    }  
+    return acc 
+  }, []) 
+  console.log(greaterNumbers)  //returns [4, 5, 6]
+
+//filter() is doing the same thing as reduce() in the above program, is equivalent and returns same results. 
+const greaterNumbers = numbers.filter(num => num > 3) //returns [4, 5, 6]
