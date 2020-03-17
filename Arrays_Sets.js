@@ -137,16 +137,16 @@ console.log(allMegaHits)
 
 /* PERFORM ACTION ON ALL ELEMENTS
 
-map() is an array method that allows me to transform each by passing it a function  similar to some() and every().
-passing map() a function called temperature (because each element is a temperature), and in the function body within curly braces, 
-for each temperature want to get the isRecordTemp property and set it to true. similar to sum() and every() the result of map() is 
-immediately returned  but whats different about map() is that it transforms the entire array  and the returned value will be a brand 
-new array of the exact same length. map() does not change or mutate the old/original array (the temperatures array in this case). create
-this new array by returning the updated temperature. after map() has gone thru every array element and returned a value, can take the 
-return value and put it in a new variable (newTemps in this case).
-
+map() is an array method that allows me to transform each temperature by passing it a function  similar to some() and every(). 
+passing map() a function called temperature (because each element is a temperature), and in the function body (within curly braces), 
+for each temperature want to get the isRecordTemp property and set it to true. similar to sum() and every(), the result of map() is 
+immediately returned but whats different about map() is that it transforms the entire array  and the returned value is a brand 
+new array of the exact same length. map() does not change or mutate the old/original array (the temperatures array in this case). 
 map() applies a given transformation that is specified in the callback function passed to the map() method to every single 
-element of the array
+element of the array.
+
+following program creates a new array by returning the updated temperature. after map() has gone thru every array element and returns 
+a value, can take the returned value and put it in a new variable (newTemps in this case). don't forget the return keyword. 
 */
 const temperatures = [
     { degrees: 69, isRecordTemp: false },
@@ -188,7 +188,7 @@ const newTemps = temperatures.map(temperature => {
     ]
  */
 
-/*using ternary operators to conditionally update array. map() coupled with conditionals are very powerful way to transform array data
+/*using ternary operators to conditionally update array. map() coupled with conditionals are very powerful ways to transform array data
 
 from each temperature, take the degrees property and want to compare/see if the temperature is > 70. this is the condition.  if so, take
 the temperature element and add on the isHigh property set to true. this can be accomplished by creating a new object and spread in all of
@@ -224,6 +224,139 @@ const temperatures = [
     , {degrees: 64
     , isRecordTemp: false
     }
-    ]
+    ]   
+*/
+
+/*another method that allows me to perform operations on every element in an array is forEach(). the difference between map() and 
+forEach() is that forEach() does not create a new array. forEach() just allows me to iterate over the array i provide it and perform 
+an operation using a callback. usually use forEach() after i have the array in the format i want it in, usually after using the map()
+method. and using the array data provided/produced by map(), use forEach() to do something with the data. 
+
+now that i have a transformed array using map() that has 2 elements with record high, i now want to inform the user that these 2 days
+had a record high of so many temperatures. can accomplish this by taking the newTemps array created with map() and iterate over it with
+forEach().
+
+for the forEach() callback function, can access the each temperature element (by calling the function temperature in this case) and in the
+function body, say if the temperature was a high, tell the user the temperature in x degrees was a record high. for the callback, do not
+need to give the function a return value because we are not returning anything because forEach() does not return a new array like 
+map() does. within function body want to check if temperature is high (if (temperature.isHigh)). if true, then alert user of record high.
+(console.log(`Temperature ${temperature.degrees} was a record high last week!`)).  
+*/
+const temperatures = [
+    { degrees: 69, isRecordTemp: false },
+    { degrees: 82, isRecordTemp: true },
+    { degrees: 73, isRecordTemp: false },
+    { degrees: 64, isRecordTemp: false }
+  ] 
   
+  //using maps() method to create a new array that adds a new property (isHigh:true) for elements with degrees >70.  
+  const newTemps = temperatures.map(temperature =>  
+  temperature.degrees > 70 ? { ...temperature, isHigh: true } : temperature 
+  ) 
+  //using forEach() method to take transformed array newTemps and log message to user about record temperatures.  
+  newTemps.forEach(temperature => {
+     if (temperature.isHigh) {
+       console.log(`Temperature ${temperature.degrees} was a record high last week!`)   
+     }
+  })
+//returns Temperature 82 was a record high last week!   Temperature 73 was a record high last week!
+
+/*can improve program by chaining methods. can remove step of creating the newTemps variable. immediately after mapping over temperatures, 
+can immediately pass the created array to forEach(). returns the same result with far more concise syntax. method chaining is powerful.
+but use method chaining wisely. it can make code hard to read */
+temperatures
+  .map(temperature => 
+temperature.degrees > 70 ? { ...temperature, isHigh: true } : temperature 
+)
+  .forEach(temperature => {
+   if (temperature.isHigh) {
+     console.log(`Temperature ${temperature.degrees} was a record high last week!`)   
+   }
+})
+//returns Temperature 82 was a record high last week!   Temperature 73 was a record high last week!
+
+/*GET SUBSET OF ARRAYS
+
+can use filter() method to search an array for a subset of data. take an array and with filter() pass a callback function to it, where i
+can supply/provide a condition.  filter(), like map(), returns a new array and does not mutate/change the original array. 
+
+program below checks to see if a string begins with a capital C. can use the string method startsWith(). filter(), like map(), returns the 
+elements that are found in a new array  and put the elements found in a new array called results. filter just returns the array elements
+for which condition was met that was specified in the function body, in other words where the return value in the function body is true: 
+restaurant.name.startsWith('C')). 
+
+filter() works by checking if the returned value of the condition is true. if element meets the condition or evaluated as true, 
+element is added to to the new filtered array. if evaluated as false element is not included.   
+
+can see this on display when setting the return value of callback explicity to true:
+const results = restaurants.filter(restaurant => true). 
+this returns all of the elements of the array because none of them are filtered out. 
+
+if none of the elements match the condition, filter() returns an empty array. 
+
+use filter() method if i want to obtain a selection/subset of an array. 
+
+use find() method if i want a single element from an array. 
+*/
+const restaurants = [
+    { name: 'Cap City Diner', milesAway: 2.2 },
+    { name: 'Chop Shop', milesAway: 4.1 },
+    { name: 'Northstar Cafe', milesAway: 0.9 },
+    { name: 'City Tavern', milesAway: 0.5 },
+    { name: 'Shake Shack', milesAway: 5.3 }
+  ]
+  const results = restaurants.filter(restaurant => restaurant.name.startsWith('C'))
+  console.log(results)  /*returns only elements that begin with capital C
+
+[{name: "Cap City Diner"
+, milesAway: 2.2
+}
+, {name: "Chop Shop"
+, milesAway: 4.1
+}
+, {name: "City Tavern"
+, milesAway: 0.5
+}
+]
+*/
+const results = restaurants.filter(restaurant => restaurant.name.startsWith('z'))
+console.log(results)  //returns []  an empty array because none of the restaurant names begin with z 
+
+/*using arrow functions and short circuiting to use the && operator to chain on a condition that checks if milesAway is <3.
+the function body checks to see if restaurant name begins with C. if so, also checks to see if milesAway <3. */
+const results = restaurants.filter(restaurant => 
+    restaurant.name.startsWith('C') && restaurant.milesAway < 3
+  )
+console.log(results)  //returns an array with 2 matches  Cap City Diner and City Tavern.
+
+/*use the find() method to find a single element in an array. find() works just like filter() but just finds the single element or
+undefined if it finds nothing. can use the string method includes() (there is also an array method called includes)
+includes() is case sensitive, so need to chain toLowerCase() method. 
+
+program is looking for element in array that contains the letters 'north' and milesAway is less than 2*/
+const result = restaurants.find(restaurant => 
+    restaurant.name.toLowerCase().includes('north') && restaurant.milesAway < 2
+    //restaurant.name.toLowerCase().includes('north') && restaurant.milesAway > 2 //returns null/undefined
+  )
+  console.log(result)  //returns single element Northstar Cafe
+
+console.log(restaurants)  /*confirming the original array has not been mutated/altered. 
+
+[{name: "Cap City Diner"
+, milesAway: 2.2
+}
+, {name: "Chop Shop"
+, milesAway: 4.1
+}
+, {name: "Northstar Cafe"
+, milesAway: 0.9
+}
+, {name: "City Tavern"
+, milesAway: 0.5
+}
+, {name: "Shake Shack"
+, milesAway: 5.3
+}
+]  
   */
+  
