@@ -1,4 +1,25 @@
-/*BUILD FLEXIBLE COLLECTIONS WITH ARRAYS 
+/*BUILD FLEXIBLE COLLECTIONS WITH ARRAYS
+
+Summary of methods: 
+1. indexOf() method determines if value exists in element
+2. push() method pushes elements to end of array.
+3. pop() method removes the last element from array 
+4. some() method checks if one of the elements in an array meet a specific condition. 
+5. every() method checks if all elements in an array meet a specific condition
+6. map() an array method that allows me to perform operation/transform each element by passing method a callback function
+7. forEach() similar to map() but does not create new array. 
+8. filter() method searches an array for a subset of data. use if want a selection of array
+9. find() method, use if want a single element from array 
+10. startsWith(), string method that checks if something contains a letter; find elements that being with capital C = startsWith(C)
+11. example of arrow functions, short circuit and && operator: restaurant.name.startsWith('C') && restaurant.milesAway < 3
+12. reduce() can return any type of value and takes 2 parameters:
+    a. the accumulator and each element that reduce() iterates over
+    b. the initial value of accumulator
+    reduce((acc, num) => {}, []) -> entitles parameters acc and num. second parameter sets the initial value of accumulator to an array
+    reduce((accumulator, menuItem) => {}, 0) ->entitles parameters accumulator/menuItem. second parameters sets accumulator to 0
+13. 
+
+
 
 Objects are great to use when i know exactly what i need to update, according to its key. And objects do not preserve 
 the property order. So will not know anything about the 1st or last entry in the object. So removing the last property added to the 
@@ -60,7 +81,7 @@ favouriteSongs.push('Your Smile')
 favouriteSongs.push('Tonight I Give') 
 favouriteSongs.push('Just Because') 
 
-console.log(favouriteSongs)  //returns 'I Go Crazy', 'Your Smile', 'Tonight I Give', 'Just Because']
+console.log(favouriteSongs)  //returns ['I Go Crazy', 'Your Smile', 'Tonight I Give', 'Just Because']
 console.log(favouriteSongs[favouriteSongs.length - 1]) //returns 'Just Because'
 favouriteSongs.pop()  //removes 'Just Because' from array
 console.log(favouriteSongs[favouriteSongs.length - 1]) //returns new last item in array 'Tonight I Give'
@@ -249,7 +270,7 @@ const temperatures = [
     { degrees: 64, isRecordTemp: false }
   ] 
   
-  //using maps() method to create a new array that adds a new property (isHigh:true) for elements with degrees >70.  
+  //using map() method to create a new array that adds a new property (isHigh:true) for elements with degrees >70.  
   const newTemps = temperatures.map(temperature =>  
   temperature.degrees > 70 ? { ...temperature, isHigh: true } : temperature 
   ) 
@@ -377,7 +398,7 @@ values, it has to be returned.
 
 3. reduce() returns the final value of the accumulator after the last iteration.
 
-reduce() takes 2 parameters, the accumulator and each element that reduce() iterates over: 
+reduce() takes 2 parameters, 1. the accumulator and each element that reduce() iterates over, 2 the initial value of accumulator: 
 menuItems.reduce((accumulator, menuItem) => {}, 0) 
 
 can use reduce() to get a total price for all items on the menu (obtaining total of all the price properties). with the accumulator, i can 
@@ -496,5 +517,24 @@ const greaterNumbers = numbers.reduce((acc, num) => {
   }, []) 
   console.log(greaterNumbers)  //returns [4, 5, 6]
 
-//filter() is doing the same thing as reduce() in the above program, is equivalent and returns same results. 
+//filter() is doing the same thing as reduce() in the above program. filter() takes a number, loops over it, see if num >3 
 const greaterNumbers = numbers.filter(num => num > 3) //returns [4, 5, 6]
+
+/*filter() and map() are both reduce() operations. filter() and map() were added as conveniences for developers to reduce the amount
+of code used with reduce() manually. can decrease the amount of code using reduce() by using ternary operators. 
+
+1. create conditional to check if number is greater than 3: num > 3 ?
+2. for the then condition, return number if greater than 3: return acc.push(num)
+3. otherwise return the accumulator: acc
+4. use implicit return of arrow function and remove the function body. 
+
+*/
+//const greaterNumbers = numbers.reduce((acc, num) => num > 3 ? acc.push(num) : acc, [])  //can't provide push as the value of the 
+                                                                                         //accumulator because push does not 
+                                                                                         //return an updated array. 
+                                                                                         //this will result in TypeError: acc.push is not a function 
+                                                                                          
+const greaterNumbers = numbers.reduce((acc, num) => num > 3 ? acc.concat(num) : acc, [])   //concat() does return updated array.                                                                                                                                                                                                                                                                         
+console.log(greaterNumbers)  //returns [4, 5, 6]
+
+//challenge: create some() and every() methods using reduce()  like with map() and filter()
