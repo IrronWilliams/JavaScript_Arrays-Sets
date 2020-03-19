@@ -10,14 +10,18 @@ Summary of methods:
 7. forEach() similar to map() but does not create new array. 
 8. filter() method searches an array for a subset of data. use if want a selection of array
 9. find() method, use if want a single element from array 
-10. startsWith(), string method that checks if something contains a letter; find elements that being with capital C = startsWith(C)
+10. startsWith(), string method that checks if something contains a letter  find elements that being with capital C = startsWith(C)
 11. example of arrow functions, short circuit and && operator: restaurant.name.startsWith('C') && restaurant.milesAway < 3
 12. reduce() can return any type of value and takes 2 parameters:
     a. the accumulator and each element that reduce() iterates over
     b. the initial value of accumulator
     reduce((acc, num) => {}, []) -> entitles parameters acc and num. second parameter sets the initial value of accumulator to an array
     reduce((accumulator, menuItem) => {}, 0) ->entitles parameters accumulator/menuItem. second parameters sets accumulator to 0
-13. 
+13. concat() pushes new items on to the end of array and also makes copy of array  so avoids mutating original array. 
+14. array spread operator [...] clones/makes copy of original array  so avoids mutating original array
+15. unshift() adds elements to beginning of array
+16. slice() returns subset of array
+17. findIndex() returns the index of an element
 
 
 
@@ -381,7 +385,7 @@ console.log(restaurants)  /*confirming the original array has not been mutated/a
 ]  
   */
   
-/* TRANSFORM ARRAYS WITH REDUCE()
+/* TRANSFORM ARRAYS WITH REDUCE(): reduce() is the got-to method for transforming content for existing arrays. 
 
 unlike map() which always returns an array, reduce() can return any type of value. reduce() iterates over all the array elements. 
 similar to other array methods, need to pass reduce() a callback function. in addition to callback function, reduce() also needs an 
@@ -537,4 +541,101 @@ of code used with reduce() manually. can decrease the amount of code using reduc
 const greaterNumbers = numbers.reduce((acc, num) => num > 3 ? acc.concat(num) : acc, [])   //concat() does return updated array.                                                                                                                                                                                                                                                                         
 console.log(greaterNumbers)  //returns [4, 5, 6]
 
-//challenge: create some() and every() methods using reduce()  like with map() and filter()
+/*AVOID MUTATIONS WITH THE ARRAY SPREAD
+
+Arrays are a sub-type of objects. so as an object, arrays are also reference types. when i passed/assigned lunchMenuIdeas to
+allMenuIdeas, i didn't pass a copy of the array, i passed a reference to it. so although working with allMenuIdeas, i am still 
+working with the original reference to lunchMenuIdeas. using the push() method mutates the original lunchMenuIdeas. can address this
+issue with 2 options. 
+
+1. swap out push() with a non-mutating array method. concat() pushes new items on to the end of array but also copies a version of the 
+array with the new elements added. so concat() method does not mutate the original lunchMenuIdeas array. 
+
+2. use array spread operator to clone the array. the array spread operator takes the elements of the array and allows me to spread them 
+into a new array. start by creating an empty array, within empty array include ...and array i want to spread/copy. this process spreads
+all of the elements into a new array i am creating and also clones/copies the array followed by the spread operator:
+
+const allMenuIdeas = [...lunchMenuIdeas]
+
+when i clone the array using the spread operator, i can now use any method w/o mutating the original array/array that was copied. 
+can use push() since i have created a copy of the original array lunchMenuIdeas.
+
+the impact of mutating an unexpected array may seem benign in this example. but changing an array during a checkout process on e-commerce
+site where unwanted items are included in a customer's basket may lead to frustrations. so its very important to avoid the unexpected/
+unintended consequences of mutating arrays. the array spread operator is a great solution to this potential problem.  
+*/
+const lunchMenuIdeas = ['Harvest Salad', 'Southern Fried Chicken'] 
+const allMenuIdeas = lunchMenuIdeas 
+allMenuIdeas.push('Club Sandwich') 
+console.log(allMenuIdeas)  //returns ["Harvest Salad", "Southern Fried Chicken", "Club Sandwich"]
+console.log(lunchMenuIdeas)  //because of object reference also returns ["Harvest Salad", "Southern Fried Chicken", "Club Sandwich"]
+
+const allMenuIdeas = lunchMenuIdeas.concat('Club Sandwich')  //returns ["Harvest Salad", "Southern Fried Chicken", "Club Sandwich"]
+const lunchMenuIdeas = ['Harvest Salad', 'Southern Fried Chicken']  //now returns original array ["Harvest Salad", "Southern Fried Chicken"]
+
+const allMenuIdeas = [...lunchMenuIdeas]  //using array spread operator to make a copy of lunchMenuIdeas
+allMenuIdeas.push('Club Sandwich')  //can now use push w/o mutating original arry. 
+console.log(allMenuIdeas)  //returns original array ["Harvest Salad", "Southern Fried Chicken"]
+
+/* MOLD ARRAYS WITH THE SPREAD OPERATOR: the spread operator is arguably the most simple and intuitive way to create and order new arrays. 
+
+unshift() method adds elements to beginning of array, and like pop() mutates the original array. 
+can also use the array spread operator to push items to front of array in non-mutating way. 
+can use the array spread operator to direct the elements positions within the arrays: 
+[...breakfastMenuIdeas, ...allMenuIdeas] -> breakfastMenuIdeas elements will be in position 0, allMenuIdeas elements will be in 2nd 
+
+because of array spread operator, do not have to remember array positional methods like unshift(), push() and pop() if i want to position
+elements in an array that i am creating. 
+
+cannot use the spread operator to remove items from an array. but can use the non-mutating method slice(), which returns a brand new array.
+slice() requires a starting index (element where i want to start slicing) and ending index (element where i want slicing to end).
+slice(1, 3) means begin with element 1 and end slicing at element up to but excluding element 3. 
+*/
+const breakfastMenuIdeas = ["Buckwheat Pancakes"] 
+const dinnerMenuIdeas = ["Glazed Salmon", "Meatloaf", "American Cheeseburger"] 
+const allMenuIdeas = ["Harvest Salad", "Southern Fried Chicken"] 
+
+const otherMenuIdeas = [...breakfastMenuIdeas, ...allMenuIdeas]  //spreading 2 arrays into new array in preserved order. 
+console.log(otherMenuIdeas)  //returns ["Buckwheat Pancakes", "Harvest Salad", "Southern Fried Chicken"]
+
+const allMenuIdeas = [
+    ...breakfastMenuIdeas, //adding the breakfast menu items to the beginning of array w/o conflicting with other array elements
+    "Harvest Salad", 
+    "Southern Fried Chicken",
+    ...dinnerMenuIdeas ////adding the dinner menu items to the end of array w/o conflicting with other array elements
+] 
+console.log(allMenuIdeas)  //returns ["Buckwheat Pancakes", "Harvest Salad", "Southern Fried Chicken, "Glazed Salmon", "Meatloaf", "American Cheeseburger"]
+console.log(allMenuIdeas.slice(1, 3))  //returns ["Harvest Salad", "Southern Fried Chicken"]
+
+/*change Harvest Salad to Garden Salad in the array. findIndex() returns the index of the element. finding this 
+element based on a certain condition, so need a callback function that iterates thru each element in the array (call each element 'idea').
+for 1st case looking for the idea of 'Harvest Salad' and store result in a variable called saladIndex. 
+
+this updated array will be put into a new array called finalMenuIdeas. within finalMenuIdeas want to spread in allMenuIdeas array at the 
+beginning. but just want to get the slice of the array from the beginning position up to the saladIndex. for next element, perform 
+the update that i want which is to change the text from Harvest Salad to Garden Salad. to get the last half of array, from saladIndex 
+afterwards, slice after the new element to the end. to achieve this, again spread in allMenuIdeas, chain on slice() with beginning 
+position as saladIndex+1. if 2nd position is not provided, slice() will include the remaining elements after the saladIndex+1.  
+
+to remove Meatloaf from array, create a variable that holds the index of the Meatloaf element. recreate array by spreading allMenuIdeas
+in, chain on slice method() and get everything up to the Meatloaf index. then spread in the 2nd half of the array which includes all 
+elements after the Meatloaf element. */
+
+//program updates menu item Harvest Salad to Garden Salad. 
+const saladIndex = allMenuIdeas.findIndex(idea => idea === 'Harvest Salad') 
+const finalMenuIdeas = [
+    ...allMenuIdeas.slice(0, saladIndex),
+    "Garden Salad",
+    ...allMenuIdeas.slice(saladIndex + 1)
+  ] 
+  console.log(finalMenuIdeas)  //returns ["Buckwheat Pancakes", "Garden Salad", "Southern Fried Chicken, "Glazed Salmon", "Meatloaf", "American Cheeseburger"]
+
+//program excludes the Meatloaf element from array. 
+const meatloafIndex = allMenuIdeas.findIndex(idea => idea === 'Meatloaf') 
+const finalMenuIdeas = [
+  ...allMenuIdeas.slice(0, meatloafIndex),
+  ...allMenuIdeas.slice(meatloafIndex + 1) 
+] 
+console.log(finalMenuIdeas)  //returns ["Buckwheat Pancakes", "Harvest Salad", "Southern Fried Chicken, "Glazed Salmon", "American Cheeseburger"]
+
+/*MORE FLEXIBLE WAYS WITH DESTRUCTURING */
