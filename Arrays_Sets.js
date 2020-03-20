@@ -22,6 +22,7 @@ Summary of methods:
 15. unshift() adds elements to beginning of array
 16. slice() returns subset of array
 17. findIndex() returns the index of an element
+18. array destructing [] allows me to separate elements into individual arrays
 
 
 
@@ -639,3 +640,63 @@ const finalMenuIdeas = [
 console.log(finalMenuIdeas)  //returns ["Buckwheat Pancakes", "Harvest Salad", "Southern Fried Chicken, "Glazed Salmon", "American Cheeseburger"]
 
 /*MORE FLEXIBLE WAYS WITH DESTRUCTURING */
+const finalMenuItems = [
+    "American Cheeseburger",
+    "Southern Fried Chicken",
+    "Glazed Salmon"
+  ] 
+  //assigning array elements by to variables based upon position
+  let first = finalMenuItems[0] 
+  let second = finalMenuItems[1] 
+  let third = finalMenuItems[2] 
+  console.log(first, second, third)  //returns American Cheeseburger,"Southern Fried Chicken","Glazed Salmon"
+
+/*object destructing makes getting values from objects easier.  arrays also have destructuring. just like object destructuring, can 
+declare multiple variables at once on a single line. 
+
+can use destructuring and the equal sign to put elements into individual variables. the 1st array element is put into the 
+variable called first because the variable first is in the 1st position of the destructuring statement. the second element is put into 
+the variable in the 2nd position called second  and 3rd array element is put into the 3rd variable third. 
+
+array destructuring does not mutate the original array. 
+
+using destructuring, put array elements and put them into individual variables. */
+const [first, second, third] = finalMenuItems  //returns American Cheeseburger,"Southern Fried Chicken","Glazed Salmon"
+
+/*do not have to destruct all elements. if i do not want to destruct 'Glazed Salmon', just remove reference to the 3rd variable in the
+destruct statement. const [first, second] = finalMenuItems  */
+const [first, second] = finalMenuItems  //only destructing 1st and 2nd elements. returns American Cheeseburger,"Southern Fried Chicken"
+
+/*to see the name of the variable  and its respective value, can use a trick with the object shorthand syntax when the object property
+and value have the same name. the trick is to wrap each log value with a set of curly braces to make the variable a key/value pair on an 
+object literal. this allows me to see whats in the variable to ensure its been updated correctly.   */
+console.log({ first },{ second })  //returns {first: "American Cheeseburger"},{second: "Southern Fried Chicken"}
+
+/*to swap the variable names, meaning to swap the positions of the first and second elements  put the variables i want to swap into a 
+new array literal [first, second] and destructure again [second, first]. need to enable reassignment for this to work. */
+let [first, second] = finalMenuItems   //changing const to let. const will not allow variables to change
+console.log('before', { first },{ second }) 
+[second, first] = [first, second] 
+console.log('after', { first },{ second })  /*returns
+before,{first: "American Cheeseburger"},{second: "Southern Fried Chicken"}
+after,{first: "Southern Fried Chicken"},{second: "American Cheeseburger"}
+*/
+
+/*to put American Cheeseburger into a separate array:
+1. reference the array (will go on right hand side of equation)
+2. write destructuring assignment [] (will go on the left hand side)
+3. use const keyword because declaring a new variable
+4. want destructuring statement to correspond to the value i am destructuring in the array. in this example, only destructuring one 
+value and its in the 1st position. const [winner] = finalMenuItems 
+
+to put the remaining 2 items in a separate array, use the rest() operator which is used specifically for destructuring statements.
+1. to get the rest of the values, use 3 dots followed by a variable name the rest of the values will be put into. this will create a
+new array:
+...losers */
+const [winner, ...losers] = finalMenuItems  //
+console.log({ winner, losers }) /* console logging values in an object. returns winner as the 1st element and losers is a brand new array
+{winner: "American Cheeseburger", losers: ["Southern Fried Chicken", "Glazed Salmon"]}
+
+*/
+
+
