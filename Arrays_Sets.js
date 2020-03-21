@@ -23,6 +23,7 @@ Summary of methods:
 16. slice() returns subset of array
 17. findIndex() returns the index of an element
 18. array destructing [] allows me to separate elements into individual arrays
+19. rest operator...   which is used specifically for destructuring statements. 
 
 
 
@@ -683,20 +684,43 @@ after,{first: "Southern Fried Chicken"},{second: "American Cheeseburger"}
 */
 
 /*to put American Cheeseburger into a separate array:
-1. reference the array (will go on right hand side of equation)
-2. write destructuring assignment [] (will go on the left hand side)
+1. reference the array containing American Cheeseburger (will go on right hand side of equation)
+2. write destructuring assignment [] (will go on the left hand side of equation )
 3. use const keyword because declaring a new variable
 4. want destructuring statement to correspond to the value i am destructuring in the array. in this example, only destructuring one 
-value and its in the 1st position. const [winner] = finalMenuItems 
+value  which is in the 1st position/element of array. const [winner] = finalMenuItems 
 
-to put the remaining 2 items in a separate array, use the rest() operator which is used specifically for destructuring statements.
-1. to get the rest of the values, use 3 dots followed by a variable name the rest of the values will be put into. this will create a
-new array:
+to put the remaining 2 items in a separate array, use the rest operator (...) which is used specifically for destructuring statements.
+1. to get the rest of the values, use 3 dots followed by a variable  which will be used to store the rest of the values/put into. 
+the rest operator will create a new array:
 ...losers */
 const [winner, ...losers] = finalMenuItems  //
 console.log({ winner, losers }) /* console logging values in an object. returns winner as the 1st element and losers is a brand new array
 {winner: "American Cheeseburger", losers: ["Southern Fried Chicken", "Glazed Salmon"]}
-
 */
 
+/* Challenge: In our restaurant, the chef has some favourite dishes in two different categories.
+The chef loves all dishes that start with "S", while the rest are regular dishes.
+Use array destructoring to create arrays of the chefs favourite dishes of meat and
+fish, and to create arrays of the regular meat and fish dishes */
+const fishDishes = ['Salmon Rillettes', 'Grilled Tuna Provencal', 'Fish and Chips']
+const meatDishes = ['Lasagna', 'Spaghetti', 'Satay Chicken Skewers']
 
+// Modify these four variables first
+let chefsFishDishes 
+let regularFishDishes 
+let chefsMeatDishes 
+let regularMeatDishes 
+
+let [chefsFishDishes, ...regularFishDishes] = fishDishes 
+let [regularMeatDishes ,...chefsMeatDishes] = meatDishes 
+console.log(chefsFishDishes)  //returns Salmon Rillettes
+console.log(regularFishDishes)  //returns ["Grilled Tuna Provencal", "Fish and Chips"]
+console.log(regularMeatDishes)  //returns Lasagna
+console.log(chefsMeatDishes)  //returns ["Spaghetti", "Satay Chicken Skewers"]
+
+// Finally, use the spread operator to create these two arrays as well
+let chefsDishes = [...chefsMeatDishes, chefsFishDishes]
+let regularDishes = [...regularFishDishes, regularMeatDishes] 
+console.log(chefsDishes)  //returns ["Spaghetti", "Satay Chicken Skewers", "Salmon Rillettes"]
+console.log(regularDishes)  //returns ["Grilled Tuna Provencal", "Fish and Chips", "Lasagna"]
