@@ -712,6 +712,16 @@ let regularFishDishes
 let chefsMeatDishes 
 let regularMeatDishes 
 
+/*
+let [chefsFishDishes, ...regularFishDishes] = fishDishes will return 'Salmon Rillettes' as the 1st element of the
+array because chefsFishDishes aligns with the 1st element of the array in fishDishes. using spread operator  
+to put the remaining elements of fishDishes into the array.  spread operator will take the remaining elements 
+'Grilled Tuna Provencal' and 'Fish and Chips' and put them in the array as the 2nd element. 
+
+let [regularMeatDishes ,...chefsMeatDishes] = meatDishes will return 'Lasagna' as the 1st element because it aligns 
+with the 1st element of the array in meatDishes. the remaining elements 'Spaghetti' and 'Satay Chicken Skewers' will
+be placed as the 2nd elements in the array because of spread operator. 
+*/
 let [chefsFishDishes, ...regularFishDishes] = fishDishes 
 let [regularMeatDishes ,...chefsMeatDishes] = meatDishes 
 console.log(chefsFishDishes)  //returns Salmon Rillettes
@@ -719,8 +729,17 @@ console.log(regularFishDishes)  //returns ["Grilled Tuna Provencal", "Fish and C
 console.log(regularMeatDishes)  //returns Lasagna
 console.log(chefsMeatDishes)  //returns ["Spaghetti", "Satay Chicken Skewers"]
 
-// Finally, use the spread operator to create these two arrays as well
+/*using the spread operator to create thee two arrays chefDishes and regularDishes.
+for chefDishes, using spread operator to put the results of chefsMeatDishes as an the 1st element in the array. 
+although chefFishDishes was the 1st element above, it will now be the 2nd element in the chefsDishes array. 
+
+for regularDishes, using spread operator to put the results of regularFishDishes as an the 1st element in the array.
+although regularMeatDishes was the 1st element above, it will now be the 2nd element in the regularDishes array.
+*/
+
 let chefsDishes = [...chefsMeatDishes, chefsFishDishes]
 let regularDishes = [...regularFishDishes, regularMeatDishes] 
 console.log(chefsDishes)  //returns ["Spaghetti", "Satay Chicken Skewers", "Salmon Rillettes"]
 console.log(regularDishes)  //returns ["Grilled Tuna Provencal", "Fish and Chips", "Lasagna"]
+
+/**TURN OBJECTS TO FLEXIBLE ARRAYS */
