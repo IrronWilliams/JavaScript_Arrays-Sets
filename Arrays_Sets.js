@@ -24,6 +24,11 @@ Summary of methods:
 17. findIndex() returns the index of an element
 18. array destructing [] allows me to separate elements into individual arrays
 19. rest operator...   which is used specifically for destructuring statements. 
+20. Object.keys() methods to convert an object into an array
+21. Object.keys() methods to convert an object into an array
+22. Object.keys() methods to convert an object into an array
+23. size() returns the number of elements in it. 
+24. Set() removes duplicate primitive elements from array and returns subset of unique elements. 
 
 
 
@@ -742,4 +747,245 @@ let regularDishes = [...regularFishDishes, regularMeatDishes]
 console.log(chefsDishes)  //returns ["Spaghetti", "Satay Chicken Skewers", "Salmon Rillettes"]
 console.log(regularDishes)  //returns ["Grilled Tuna Provencal", "Fish and Chips", "Lasagna"]
 
-/**TURN OBJECTS TO FLEXIBLE ARRAYS */
+/*TURN OBJECTS TO FLEXIBLE ARRAYS
+
+can use the for in loop as a way to iterate over an object to get the key/value pair.  iterating over object data in this way limits my 
+ability to iterate over object data in a number of ways (when compared to iterating arrays). objects are limited in terms of methods and 
+limits how i can work with the data. because of this, may consider converting object into a more flexible data structure such as an array.
+this give me access to the host of different array methods to transform data in a more dynamic way. using object methods, can covert
+objects into arrays using 3 different ways. following methods are:
+
+Object.keys(): allows me to take the keys of an object and turn them into an array
+
+Object.values(): allows me to access the values of an object
+
+Object.entries() : used to iterate over the entire object, including keys and entries 
+
+these 3 methods are useful when i have static data object structures but need to manipulate its content in a more dynamic way. 
+using these 3 methods will give me access to its keys/values plus the ability to chain on array methods. or replace the chained 
+array methods with a single reduce() to transform/filter the data as i need. */
+
+//loops thru an object to get keys. declaring a variable so use const in for loop
+const obj = { one: 1, two: 2 } 
+for (const key in obj) {
+  console.log('key', key)  //returns key,"one"   key,"two"
+}
+
+//loops thru an object to get values. take object and use the key and square bracket syntax and pass in the key dynamic value.
+for (const key in obj) {
+  console.log('value', obj[key])  //returns value, 1  value, 2  
+}
+
+/* using Object.keys() on user object to return an array with keys. the keys in the object are strings and will be strings in array
+this method allow me to check if a property exists  such as checking if the user object has a key entitled age. can use the array method
+includes() which checks if an existing string exist as an element of an array. since object.keys() returns an array, can chain on 
+includes() to see if object user includes the string age.
+
+can also use Object.keys() to get the values from the user object. since Object.keys() returns an array, can now use any array method
+to map over key elements and use property access with the original user object to get the values. after getting array data from 
+Object.keys(), can chain on map() and pass a it a callback function. every element of the array can be called prop or key for example 
+in the callback function parameters. in the return function, can take the name of the object and use the square bracket notation to get 
+the key corresponding value. 
+*/
+const user = {
+  name: 'John',
+  age: 29  
+} 
+
+console.log(Object.keys(user))  //return array with the keys from object as elements ["name", "age"]
+
+const ageExists = Object.keys(user).includes('age') 
+console.log(ageExists)  //returns true
+
+const values = Object.keys(user).map(key => user[key]) 
+console.log(values)  //returns ["John", 29]
+
+/* Object.values() is great method to use when i want a flexible way to work with all of the values in an object. 
+can access the values of an object by using Object.values(). pass in the object who's properties i want to get.
+
+with the monthlyExpenses object, want to total all fo the expenses values. 
+1. creating a variable called monthlyTotal.
+2. get the array of values with Object.values(monthlyExpenses) from the monthlyExpenses object.
+3. chain on reduce() to sum all of the numbers in the array. use can array function for the callback where the initial value will be 0.
+within the callback, have the accumulator and call each element i am iterating over expense. 
+4. since there is an implicit return with arrow function, the accumulator will always be returned from expression acc + expense.
+*/
+console.log(Object.values(user))  //returns ["John", 29] from the user object
+
+//program sums all of the expenses from the monthlyExpenses object
+const monthlyExpenses = {
+  food: 400,
+  rent: 1700,
+  insurance: 550,
+  internet: 49,
+  phone: 95  
+} 
+const monthlyTotal = Object.values(monthlyExpenses).reduce(
+    (acc, expense) => acc + expense, 0
+) 
+//const monthlyTotal = Object.values(monthlyExpenses).reduce((acc, expense) => acc + expense, 0)  // put on single line
+console.log(monthlyTotal) 
+
+/*using Object.entries() to iterate over entire object, both keys and values.
+
+the object users has a number of nested objects which contain user data consisting of properties name and age. for each user, there is a
+corresponding id as its key. if i want to get very specific data from the object, like name and age for users over the age of 20. 
+1. take Object.entries() and pass users object to it. this returns an array, which allows me to apply any array method.
+
+2. goal is to transform the data into an array of objects (an array of user data), expressed as an object and filter based on a condition.
+so in essence i want to transform and filter the array. so can chain on map() and filter(). Object.entries(users).map().filter().  
+map() and filter() are both reduction operations. as a result, can combine map() and filter() or replace methods with reduce(). 
+  a. using reduce() and its basic callback structure reduce(() => {}, []). the data i want back is an array.
+  b. callback will have the accumulator, and for the element, can use array destructuring to get the 1st and second elements.
+  since there are in that order, can use id and user within parameters: 
+    Object.entries(users).reduce((acc, [id, user]) => {}, []) 
+
+3. to conditionally put the array element in the final array if user is >20, use an if statement in the function body. if user >20, take
+the accumulator and push onto it all of the user data as well as the id. to make this object, pass in an object to push() and spread in all
+of users properties with the object spread and add the id on at the end. since id will be used as both the property and value in this 
+example, can use object shorthand. 
+
+  if (user.age > 20) {
+    acc.push({ ...user, id }) 
+  }  
+
+4. return accumulator at end.
+
+5. put resulting array in variable called usersOver20.*/
+
+const user = {
+  name: 'John',
+  age: 29  
+} 
+console.log(Object.entries(user))  //returns an array of arrays [["name", "John"], ["age", 29]]
+
+const users = {
+  '2345234': {
+    name: "John",
+    age: 29
+  },
+  '8798129': {
+    name: "Jane",
+    age: 42
+  },
+  '1092384': {
+    name: "Fred",
+    age: 17 
+  }
+} 
+console.log(Object.entries(users))  /*returns a big array with 3 sub-arrays which includes the key and it values. the values are objects.
+[["1092384", {name: "Fred", age: 17}], ["2345234", {name: "John", age: 29}], ["8798129", {name: "Jane", age: 42}]] */
+
+/*program returns an array containing a single object that has data for users over 20. returns the following array: 
+[{name: "John", age: 29, id: "2345234"}, {name: "Jane", age: 42, id: "8798129"}] */
+const usersOver20 = Object.entries(users).reduce((acc, [id, user]) => {
+  if (user.age > 20) {
+    acc.push({ ...user, id }) 
+  }  
+  return acc 
+}, []) 
+console.log(usersOver20) 
+
+/*GET UNIQUE SETS OF DATA (REDO)
+
+a Set() is a special object type where each value within it can only occur once. a set enforces uniqueness of its elements. 
+set tosses out any repeated value. can create a set with New Set() function. can immediately put values in it by using square brackets:
+
+new Set([1, 2, 3]) 
+
+when a set is initialized, the order is preserved  so the way its set up is important. 
+
+Set() enforces uniqueness with primitive values (1, 2, 3) but does not throw away arrays that have the exact elements:
+new Set([[1], [1], [3]])
+Set() cant compare objects by value to see if they are equal. so this will return the size of 3 elements. arrays are object types
+or reference types  and therefore in this sense, they are all unique. 
+
+a Set() is much like an array because it does not include keys. can't access it value by referencing a key or an index. to get the values
+of a set, have to iterate over it. can use a 'for of' loop to do so. first need to store created set in a variable. 
+
+Set() can be converted into an array by using spread operator. 
+
+*/
+console.log(new Set([1, 2, 3]).size)  //chaining on size to get the number of elements in an array. returns 3
+console.log(new Set([1, 1, 3]).size)  //Set() enforces element uniqueness, so will return 2
+console.log(new Set([[1], [1], [3]]).size)  //returns 3 because unable to compere objects by value to see if they are equal. 
+
+//using for loop to iterate over Set()
+const numbers = new Set([[1], [1], [3]]) 
+for (const num of numbers) {
+  console.log(num)  }  //returns [1], [1], [3]
+
+/* using Set() and spread operator to obtain an array with unique elements for customerDishes array.
+
+1. put all of the array elements in customerDishes into Set() as its being created: new Set(customerDishes) 
+    a. i can also create a new array inline/(spread all elements from customerDishes) and also add more elements, like another dish
+       all within the created set:   new Set([...customerDishes, 'dish']). this approach not needed in this example.
+
+2. once pass array into set, wrap the created set into a new array and spread all of its unique Set() elements into that:
+    [new Set(customerDishes)] -> wrap in new array
+    [...new Set(customerDishes)] -> spread its unique elements into that
+
+3. this returns a subset of array with each string value in element represented once uniquely.  could have used filter to address this 
+but more efficient to rely on new data structures like Set(). more efficient and less code.  */
+
+const customerDishes = [
+  "Chicken Wings",
+  "Fish Sandwich",
+  "Beef Stroganoff",
+  "Grilled Cheese",
+  "Blue Cheese Salad",
+  "Chicken Wings",
+  "Reuben Sandwich",
+  "Grilled Cheese",
+  "Fish Sandwich",
+  "Chicken Pot Pie",
+  "Fish Sandwich",
+  "Beef Stroganoff"
+] 
+const uniqueDishes = [...new Set(customerDishes)] 
+console.log(uniqueDishes) /*returns the unique values from array
+["Chicken Wings"
+, "Fish Sandwich"
+, "Beef Stroganoff"
+, "Grilled Cheese"
+, "Blue Cheese Salad"
+, "Reuben Sandwich"
+, "Chicken Pot Pie"
+]      */
+
+/*USE NEW IMMUTABLE ARRAY FEATURES:
+
+Goal is to learn 'modern javascript', which is to aim to use the right tool for the job. don't use just 1 tool for the job/challenge. 
+such as a for loop when working with arrays. use the methods/features that are most appropriate and results in the most readable code.
+considering the for loop, new features are available to do the same thing but better, w/o having to remember difficult syntax. i don't 
+have to know all of javascript to master the language. instead, focus on features that help me write better code easier.  
+
+the methods reviewed in this module perform just the same as a for loop. they iterate over an array with each method having a specific 
+purpose. fortunately, there are multiple ways to perform an array iteration. need to understand what i want to do with the data and 
+select an array method to perform the iteration and perform an operation in the process. 
+
+make full use of array methods  particularly those that allow me to create and update arrays immutably. mastering following array 
+features. code will be simpler, more precise and more powerful:
+    map()
+    filter()
+    reduce()
+    some() / every()
+    find() / findIndex()
+    forEach()
+
+Plus:
+    slice()
+    concat()
+    includes()
+    array spread operator (...) -> technically not an array method but powerful. 
+*/
+
+const numbers = [1, 2, 3, 4, 5] 
+//old school way to iterate over an array
+for (let i = 0  i < numbers.length  i++) {
+  console.log(numbers[i])  //returns 1 2 3 4 5
+}
+//modern way to iterate over array. code is more precise and readable. 
+numbers.forEach(number => {
+  console.log(number)   //returns 1 2 3 4 5
+}) 
